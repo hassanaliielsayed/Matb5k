@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Your Meal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="matb5k">Matbخk</string>
+    <string name="next">Next</string>
+    <string name="matbkhk">Matb5k</string>
+    <string name="baked">Baked</string>
+    <string name="user_name">User Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="create_an_account">Create An Account</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+</resources>
