@@ -46,7 +46,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
         viewPager2 = findViewById(R.id.viewMapper);
         int[] images = {R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four};
-        String[] headings = {"Baked", "For You", "Welcome", "Matb5k"};
+        String[] headings = {"Join Us Now!", "Join Us Now!", "Join Us Now!", "Join Us Now!"};
 
 
         viewPagerItemsList = new ArrayList<>();
@@ -63,7 +63,6 @@ public class OnboardingActivity extends AppCompatActivity {
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(2);
-
         viewPager2.getChildAt(0).setOverScrollMode(ViewPager2.OVER_SCROLL_NEVER);
 
     }

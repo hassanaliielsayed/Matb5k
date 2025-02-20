@@ -1,5 +1,6 @@
 package com.example.yourmeal.auth.register;
 
+import static com.example.yourmeal.util.Constants.ALREADY_LOGGED_IN;
 import static com.example.yourmeal.util.Constants.EMAIL;
 import static com.example.yourmeal.util.Constants.PASSWORD;
 import static com.example.yourmeal.util.Constants.USER_NAME;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.util.Patterns;
@@ -25,9 +27,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Objects;
 
 
@@ -67,13 +66,10 @@ public class RegisterFragment extends Fragment {
         btnRegister = view.findViewById(R.id.btnRegister);
         txtLogin = view.findViewById(R.id.txtLogin);
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createAccount();
-            }
+        btnRegister.setOnClickListener(view1 -> createAccount());
+        txtLogin.setOnClickListener(view2 -> {
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
         });
-
 
     }
 
@@ -96,13 +92,12 @@ public class RegisterFragment extends Fragment {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                changeProgress(false);
                 if (task.isSuccessful()){
                     Toast.makeText(getActivity(), "Account created successfully", Toast.LENGTH_SHORT).show();
-
                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
                     if (currentUser != null){
-                        Log.d("asd --> ", "onComplete: " + currentUser.getDisplayName());
                         saveUserInSharedPreference(Objects.requireNonNull(txtInputUserName.getText()).toString(), email, password);
                         navigateToHomeScreen();
                     }
@@ -115,6 +110,7 @@ public class RegisterFragment extends Fragment {
 
     private void navigateToHomeScreen() {
         // TODO: navigation to home screen
+        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_dashboardActivity);
     }
 
     private void saveUserInSharedPreference(String userName, String email, String password) {
@@ -122,6 +118,7 @@ public class RegisterFragment extends Fragment {
         SharedPref.getInstance(getContext()).putValue(USER_NAME, userName);
         SharedPref.getInstance(getContext()).putValue(EMAIL, email);
         SharedPref.getInstance(getContext()).putValue(PASSWORD, password);
+        SharedPref.getInstance(getContext()).putValue(ALREADY_LOGGED_IN, true);
 
     }
 
@@ -136,25 +133,25 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean validateData(String userName, String email, String password, String confirmPassword){
-
+        boolean result = true;
         if (userName.isEmpty() || userName.length() < 4 || !userName.matches("[a-zA-Z0-9]+")){
             txtInputUserName.setError("Username is Invalid");
-            return false;
+            result = false;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             txtInputEmail.setError("Email is Invalid");
-            return false;
+            result = false;
         }
         if (password.length() < 8){
             txtInputPassword.setError("Password is Invalid");
-            return false;
+            result = false;
         }
         if (!confirmPassword.equals(password)){
             txtInputConfirmPassword.setError("password is not matched");
-            return false;
+            result = false;
         }
 
-        return true;
+        return result;
 
     }
 }
