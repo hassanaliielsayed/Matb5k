@@ -109,7 +109,6 @@ public class RegisterFragment extends Fragment {
     }
 
     private void navigateToHomeScreen() {
-        // TODO: navigation to home screen
         Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_dashboardActivity);
     }
 

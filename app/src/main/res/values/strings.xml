@@ -28,4 +28,10 @@
     <string name="title_notifications">Notifications</string>
     <string name="area">"Area: "</string>
     <string name="category">"Category: "</string>
+    <string name="meal_details">Meal Details</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="category_area">Category | Area</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="detailed_instructions_for_the_recipe">Detailed instructions for the recipe.</string>
 </resources>

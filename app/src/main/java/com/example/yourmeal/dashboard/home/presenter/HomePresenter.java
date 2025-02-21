@@ -4,13 +4,16 @@ import com.example.yourmeal.dashboard.home.view.HomeViewInterface;
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.repo.RepoInterface;
 
-public class RandomMealsPresenter implements RandomMealsPresenterInterface {
+import java.util.List;
+import java.util.Random;
+
+public class HomePresenter implements HomePresenterInterface {
 
     HomeViewInterface homeView;
 
     RepoInterface repo;
 
-    public RandomMealsPresenter(RepoInterface repo, HomeViewInterface homeView){
+    public HomePresenter(RepoInterface repo, HomeViewInterface homeView){
         this.repo = repo;
         this.homeView = homeView;
     }
@@ -24,7 +27,23 @@ public class RandomMealsPresenter implements RandomMealsPresenterInterface {
         homeView.onResponseError(errorMsg);
     }
 
+    @Override
     public void getRandomMeal(){
         repo.getRandomMeal(this);
+    }
+
+    @Override
+    public void onAllMealsResponseSuccess(List<Meal> allMealsResponseList) {
+        homeView.onAllMealsResponseSuccess(allMealsResponseList);
+    }
+
+    @Override
+    public void getAllMeals(){
+        repo.getAllMeals(this, getRandomCharacter());
+    }
+
+    private char getRandomCharacter() {
+        Random random = new Random();
+        return (char) ('a' + random.nextInt(26));
     }
 }
