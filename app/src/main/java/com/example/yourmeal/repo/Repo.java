@@ -1,6 +1,6 @@
 package com.example.yourmeal.repo;
 
-import com.example.yourmeal.dashboard.home.presenter.RandomMealsPresenterInterface;
+import com.example.yourmeal.dashboard.home.presenter.HomePresenterInterface;
 import com.example.yourmeal.network.MealsRemoteDataSourceInterface;
 
 public class Repo implements RepoInterface {
@@ -24,10 +24,14 @@ public class Repo implements RepoInterface {
     }
 
     @Override
-    public void getRandomMeal(RandomMealsPresenterInterface randomMealsPresenter){
-        mealsRemoteDataSource.makeNetworkCall(randomMealsPresenter);
+    public void getRandomMeal(HomePresenterInterface randomMealsPresenter){
+        mealsRemoteDataSource.makeRandomMealNetworkCall(randomMealsPresenter);
     }
 
+    @Override
+    public void getAllMeals(HomePresenterInterface randomMealsPresenter, char character) {
+        mealsRemoteDataSource.makeAllMealsNetworkCall(randomMealsPresenter, character);
+    }
 
 
 }

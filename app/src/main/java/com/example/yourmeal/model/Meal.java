@@ -1,6 +1,8 @@
 package com.example.yourmeal.model;
 
-public class Meal {
+import java.io.Serializable;
+
+public class Meal implements Serializable {
         private Object dateModified;
 
         private String idMeal;
@@ -530,7 +532,4 @@ public class Meal {
         public void setStrYoutube(String strYoutube) {
             this.strYoutube = strYoutube;
         }
-
-
-
 }
