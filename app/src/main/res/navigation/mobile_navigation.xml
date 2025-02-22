@@ -16,23 +16,33 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.yourmeal.dashboard.view.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:id="@+id/navigation_calender"
+        android:name="com.example.yourmeal.dashboard.calendar.CalenderFragment"
+        android:label="Calender"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.yourmeal.dashboard.view.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_fav"
+        android:name="com.example.yourmeal.dashboard.favorite.FavFragment"
+        android:label="@string/favourite"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.yourmeal.mealdetails.MealDetailsFragment"
+        android:name="com.example.yourmeal.mealdetails.view.MealDetailsFragment"
         android:label="@string/meal_details"
         tools:layout="@layout/fragment_meal_details">
         <argument
             android:name="meal"
             app:argType="com.example.yourmeal.model.Meal" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.yourmeal.dashboard.search.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.yourmeal.dashboard.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
