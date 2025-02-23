@@ -8,7 +8,7 @@
 
     <style name="Theme.YourMeal" parent="Base.Theme.YourMeal" />
 
-    <style name="Theme.Dashboard.Style" parent="Theme.Material3.DayNight">
+    <style name="Theme.Dashboard.Style" parent="Theme.AppCompat.DayNight">
 
         <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>

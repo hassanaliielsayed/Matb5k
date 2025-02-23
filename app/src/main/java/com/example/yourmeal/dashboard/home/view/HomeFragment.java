@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.yourmeal.R;
+import com.example.yourmeal.dashboard.Communicator;
 import com.example.yourmeal.dashboard.home.presenter.HomePresenter;
 import com.example.yourmeal.dashboard.home.presenter.HomePresenterInterface;
 import com.example.yourmeal.databinding.FragmentHomeBinding;
+import com.example.yourmeal.local.MealsLocalDataSource;
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.network.APIClient;
 import com.example.yourmeal.network.MealsRemoteDataSource;
@@ -28,10 +30,9 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements HomeViewInterface, OnMealItemClickListener{
 
-    HomePresenterInterface randomMealsPresenter;
-
-    AllMealsAdapter adapter;
-    RecyclerView recyclerView;
+    private HomePresenterInterface randomMealsPresenter;
+    private AllMealsAdapter adapter;
+    private Communicator communicator;
 
     private FragmentHomeBinding binding;
 
@@ -45,17 +46,22 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        communicator = (Communicator) getActivity();
+
         adapter = new AllMealsAdapter(this);
         binding.allMealRecyclerView.setAdapter(adapter);
 
         randomMealsPresenter = new HomePresenter(
                 Repo.getInstance(
-                        new MealsRemoteDataSource(APIClient.getInstance().getService())
+                        new MealsRemoteDataSource(APIClient.getInstance().getService()),
+                        new MealsLocalDataSource(getContext())
                 ),
                 this
         );
         randomMealsPresenter.getRandomMeal();
         randomMealsPresenter.getAllMeals();
+
+
     }
 
     @Override
@@ -79,17 +85,27 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
     @Override
     public void onAllMealsResponseSuccess(List<Meal> mealsList) {
         if (mealsList == null){
-            Log.i("asd --> ", "onAllMealsResponseSuccess: NULL");
+            randomMealsPresenter.getRandomMeal();
         } else {
-            Log.d("asd --> ", "onAllMealsResponseSuccess: " + mealsList.toString());
             adapter.setMealsList(mealsList);
         }
     }
 
     @Override
     public void onMealClicked(Meal meal) {
-
         HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal);
         Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        communicator.showNavBottom();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        communicator.hideNavBottom();
     }
 }

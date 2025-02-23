@@ -34,4 +34,11 @@
     <string name="ingredients">Ingredients</string>
     <string name="instructions">Instructions</string>
     <string name="detailed_instructions_for_the_recipe">Detailed instructions for the recipe.</string>
+    <string name="youtube">YouTube:</string>
+    <string name="measure">Measure</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="calender">Calender</string>
+    <string name="favourite">Favourite</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
 </resources>
