@@ -14,8 +14,12 @@ public interface RepoInterface {
 
     void insertMeal(Meal meal);
 
-    LiveData<List<Meal>> getStoredProduct();
+    LiveData<List<Meal>> getStoredMeals();
 
-    void deleteMeal(Meal product);
+    void deleteMeal(Meal meal);
+
+    LiveData<Meal> getMealById(String idMeal);
+
+
 
 }

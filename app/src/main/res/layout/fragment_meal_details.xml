@@ -35,19 +35,21 @@
             android:id="@+id/imgCalendarAdd"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/imgFavAdd"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
-            app:layout_constraintTop_toTopOf="@+id/txtMealName"
-            app:srcCompat="@drawable/calender" />
+            app:layout_constraintTop_toBottomOf="@+id/card_view"
+            app:srcCompat="@drawable/calendar" />
 
         <ImageButton
             android:id="@+id/imgFavAdd"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="208dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@android:color/transparent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintTop_toTopOf="@+id/card_view"
+            app:layout_constraintTop_toBottomOf="@+id/card_view"
             app:srcCompat="@drawable/heart_empty" />
 
         <TextView

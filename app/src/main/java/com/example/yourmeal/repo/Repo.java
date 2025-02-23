@@ -47,13 +47,18 @@ public class Repo implements RepoInterface {
     }
 
     @Override
-    public LiveData<List<Meal>> getStoredProduct() {
+    public LiveData<List<Meal>> getStoredMeals() {
         return (mealsLocalDataSource.getMeals());
     }
 
     @Override
     public void deleteMeal(Meal meal) {
         mealsLocalDataSource.removeMeal(meal);
+    }
+
+    @Override
+    public LiveData<Meal> getMealById(String idMeal) {
+        return (mealsLocalDataSource.getMealById(idMeal));
     }
 
 

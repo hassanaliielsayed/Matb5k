@@ -23,9 +23,13 @@
 
     <fragment
         android:id="@+id/navigation_fav"
-        android:name="com.example.yourmeal.dashboard.favorite.FavFragment"
+        android:name="com.example.yourmeal.dashboard.favorite.view.FavouriteFragment"
         android:label="@string/favourite"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_navigation_fav_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
         android:name="com.example.yourmeal.mealdetails.view.MealDetailsFragment"

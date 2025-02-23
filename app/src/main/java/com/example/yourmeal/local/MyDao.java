@@ -20,4 +20,10 @@ public interface MyDao {
     @Query("select * from my_meal_table")
     LiveData<List<Meal>> getAllMeals();
 
+    @Query("select * from my_meal_table where idMeal = :idMeal")
+    LiveData<Meal> getMealById(String idMeal);
+
+
+
+
 }

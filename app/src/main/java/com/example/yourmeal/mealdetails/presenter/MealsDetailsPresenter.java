@@ -1,5 +1,7 @@
 package com.example.yourmeal.mealdetails.presenter;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.repo.RepoInterface;
 
@@ -36,8 +38,18 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
     }
 
     @Override
-    public void addProductToFav(Meal meal) {
+    public void addMealToFav(Meal meal) {
         repo.insertMeal(meal);
+    }
+
+    @Override
+    public LiveData<Meal> getMealById(String idMeal) {
+        return repo.getMealById(idMeal);
+    }
+
+    @Override
+    public void removeMealFromFav(Meal meal) {
+        repo.deleteMeal(meal);
     }
 
 }

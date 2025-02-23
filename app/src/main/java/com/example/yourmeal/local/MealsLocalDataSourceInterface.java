@@ -14,5 +14,9 @@ public interface MealsLocalDataSourceInterface {
 
     void removeMeal(Meal meal);
 
+    LiveData<Meal> getMealById(String idMeal);
+
+
+
 
 }

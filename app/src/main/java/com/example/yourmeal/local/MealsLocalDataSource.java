@@ -36,4 +36,9 @@ public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
         }).start();
 
     }
+
+    @Override
+    public LiveData<Meal> getMealById(String idMeal) {
+        return myDao.getMealById(idMeal);
+    }
 }

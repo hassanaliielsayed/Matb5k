@@ -1,10 +1,13 @@
 package com.example.yourmeal.mealdetails.view;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;import com.bumptech.glide.Glide;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.bumptech.glide.Glide;
 import com.example.yourmeal.R;
-
 import com.example.yourmeal.local.MealsLocalDataSource;
 import com.example.yourmeal.mealdetails.presenter.MealsDetailsPresenter;
 import com.example.yourmeal.mealdetails.presenter.MealsDetailsPresenterInterface;
@@ -42,6 +46,8 @@ public class MealDetailsFragment extends Fragment{
     RecyclerView recyclerView;
     IngredientAdapter adapter;
     MealsDetailsPresenterInterface detailsPresenter;
+
+    boolean isFav = false;
 
 
     @Override
@@ -92,10 +98,49 @@ public class MealDetailsFragment extends Fragment{
             }
         }
 
+//        LiveData<Meal> mealById = detailsPresenter.getMealById(meal.getIdMeal());
+//        if (mealById != null){
+//            imgFavBtn.setImageResource(R.drawable.heart_filled);
+//            isFav = true;
+//        } else {
+//            imgFavBtn.setImageResource(R.drawable.heart_empty);
+//            isFav = false;
+//        }
+
         imgFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                detailsPresenter.addProductToFav(meal);
+                if(isFav){
+                    // popup to user
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("Delete Item") // Title of the dialog
+                            .setMessage("Are you sure you want to delete this item?") // Message
+                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Handle the delete action
+                                    detailsPresenter.removeMealFromFav(meal);
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Dismiss the dialog
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert) // Optional: Set an icon
+                            .show(); // Show the dialog
+
+                    isFav = true;
+
+                } else {
+                    detailsPresenter.addMealToFav(meal);
+                    imgFavBtn.setImageResource(R.drawable.heart_filled);
+                    Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
+                    isFav = true;
+                }
+
             }
         });
 
@@ -276,6 +321,9 @@ public class MealDetailsFragment extends Fragment{
     }
 
 
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        youTubePlayerView.release();
+    }
 }
