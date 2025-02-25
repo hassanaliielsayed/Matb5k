@@ -1,21 +1,29 @@
 package com.example.yourmeal.mealdetails.presenter;
 
-import androidx.lifecycle.LiveData;
+import android.annotation.SuppressLint;
 
+import com.example.yourmeal.mealdetails.view.MealDetailsViewInterface;
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.repo.RepoInterface;
 
 import java.util.Objects;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.text.MatchResult;
 import kotlin.text.Regex;
 
 public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
 
     RepoInterface repo;
+    MealDetailsViewInterface mealDetailsViewInterface;
 
-    public MealsDetailsPresenter(RepoInterface repo){
+    public MealsDetailsPresenter(RepoInterface repo, MealDetailsViewInterface mealDetailsViewInterface){
         this.repo = repo;
+        this.mealDetailsViewInterface = mealDetailsViewInterface;
     }
 
     @Override
@@ -39,17 +47,62 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
 
     @Override
     public void addMealToFav(Meal meal) {
-        repo.insertMeal(meal);
+        repo.insertMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mealDetailsViewInterface.showAddedMessage();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
 
+    @SuppressLint("CheckResult")
     @Override
-    public LiveData<Meal> getMealById(String idMeal) {
-        return repo.getMealById(idMeal);
+    public void getMealById(String idMeal) {
+
+        repo.getMealById(idMeal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(meal -> {
+                    mealDetailsViewInterface.showFavItemIcon(meal);
+                });
     }
 
     @Override
     public void removeMealFromFav(Meal meal) {
-        repo.deleteMeal(meal);
+        repo.deleteMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mealDetailsViewInterface.showRemovedMessage();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
+
+
 
 }

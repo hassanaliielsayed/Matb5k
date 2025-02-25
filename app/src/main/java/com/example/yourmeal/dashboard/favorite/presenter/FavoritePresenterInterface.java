@@ -10,5 +10,5 @@ public interface FavoritePresenterInterface {
 
     void removeMeal(Meal meal);
 
-    LiveData<List<Meal>> getMealsLocally();
+    void getMealsLocally();
 }

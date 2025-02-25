@@ -8,6 +8,9 @@ import com.example.yourmeal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
 
     MyDao myDao;
@@ -18,27 +21,24 @@ public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
     }
 
     @Override
-    public void addMeal(Meal meal) {
-        new Thread(() -> {
-            myDao.insertMeal(meal);
-        }).start();
+    public Completable addMeal(Meal meal) {
+
+        return myDao.insertMeal(meal);
     }
 
     @Override
-    public LiveData<List<Meal>> getMeals() {
+    public Flowable<List<Meal>> getMeals() {
         return myDao.getAllMeals();
     }
 
     @Override
-    public void removeMeal(Meal meal) {
-        new Thread(() -> {
-            myDao.deleteMeal(meal);
-        }).start();
+    public Completable removeMeal(Meal meal) {
 
+        return myDao.deleteMeal(meal);
     }
 
     @Override
-    public LiveData<Meal> getMealById(String idMeal) {
+    public Flowable<Meal> getMealById(String idMeal) {
         return myDao.getMealById(idMeal);
     }
 }

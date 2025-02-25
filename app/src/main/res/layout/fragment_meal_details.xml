@@ -54,17 +54,20 @@
 
         <TextView
             android:id="@+id/txtMealName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/f36b21"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:maxLines="2"
             android:text="@string/meal_name"
+            android:textColor="@color/f36b21"
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@+id/card_view" />
+            app:layout_constraintEnd_toStartOf="@+id/imgFavAdd"
+            app:layout_constraintStart_toEndOf="@+id/imgCalendarAdd"
+            app:layout_constraintTop_toTopOf="@+id/imgCalendarAdd" />
 
         <TextView
             android:id="@+id/txtMealDetails"

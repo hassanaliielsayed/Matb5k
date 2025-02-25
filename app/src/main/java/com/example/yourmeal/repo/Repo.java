@@ -5,9 +5,14 @@ import androidx.lifecycle.LiveData;
 import com.example.yourmeal.dashboard.home.presenter.HomePresenterInterface;
 import com.example.yourmeal.local.MealsLocalDataSourceInterface;
 import com.example.yourmeal.model.Meal;
+import com.example.yourmeal.model.RandomMealResponse;
 import com.example.yourmeal.network.MealsRemoteDataSourceInterface;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public class Repo implements RepoInterface {
 
@@ -32,32 +37,32 @@ public class Repo implements RepoInterface {
     }
 
     @Override
-    public void getRandomMeal(HomePresenterInterface randomMealsPresenter){
-        mealsRemoteDataSource.makeRandomMealNetworkCall(randomMealsPresenter);
+    public Single<RandomMealResponse> getRandomMeal(){
+        return mealsRemoteDataSource.makeRandomMealNetworkCall();
     }
 
     @Override
-    public void getAllMeals(HomePresenterInterface randomMealsPresenter, char character) {
-        mealsRemoteDataSource.makeAllMealsNetworkCall(randomMealsPresenter, character);
+    public Single<RandomMealResponse> getAllMeals(char character) {
+        return mealsRemoteDataSource.makeAllMealsNetworkCall(character);
     }
 
     @Override
-    public void insertMeal(Meal meal) {
-        mealsLocalDataSource.addMeal(meal);
+    public Completable insertMeal(Meal meal) {
+        return mealsLocalDataSource.addMeal(meal);
     }
 
     @Override
-    public LiveData<List<Meal>> getStoredMeals() {
+    public Flowable<List<Meal>> getStoredMeals() {
         return (mealsLocalDataSource.getMeals());
     }
 
     @Override
-    public void deleteMeal(Meal meal) {
-        mealsLocalDataSource.removeMeal(meal);
+    public Completable deleteMeal(Meal meal) {
+        return mealsLocalDataSource.removeMeal(meal);
     }
 
     @Override
-    public LiveData<Meal> getMealById(String idMeal) {
+    public Flowable<Meal> getMealById(String idMeal) {
         return (mealsLocalDataSource.getMealById(idMeal));
     }
 

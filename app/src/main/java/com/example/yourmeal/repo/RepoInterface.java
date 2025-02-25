@@ -4,21 +4,26 @@ import androidx.lifecycle.LiveData;
 
 import com.example.yourmeal.dashboard.home.presenter.HomePresenterInterface;
 import com.example.yourmeal.model.Meal;
+import com.example.yourmeal.model.RandomMealResponse;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 public interface RepoInterface {
-    void getRandomMeal(HomePresenterInterface randomMealsPresenter);
+    Single<RandomMealResponse> getRandomMeal();
 
-    void getAllMeals(HomePresenterInterface randomMealsPresenter, char character);
+    Single<RandomMealResponse> getAllMeals(char character);
 
-    void insertMeal(Meal meal);
+    Completable insertMeal(Meal meal);
 
-    LiveData<List<Meal>> getStoredMeals();
+    Flowable<List<Meal>> getStoredMeals();
 
-    void deleteMeal(Meal meal);
+    Completable deleteMeal(Meal meal);
 
-    LiveData<Meal> getMealById(String idMeal);
+    Flowable<Meal> getMealById(String idMeal);
 
 
 

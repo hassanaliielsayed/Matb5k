@@ -6,15 +6,17 @@ import com.example.yourmeal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 public interface MealsLocalDataSourceInterface {
 
-    void addMeal(Meal meal);
+    Completable addMeal(Meal meal);
 
-    LiveData<List<Meal>> getMeals();
+    Flowable<List<Meal>> getMeals();
+    Completable removeMeal(Meal meal);
 
-    void removeMeal(Meal meal);
-
-    LiveData<Meal> getMealById(String idMeal);
+    Flowable<Meal> getMealById(String idMeal);
 
 
 

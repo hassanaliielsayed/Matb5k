@@ -1,11 +1,16 @@
 package com.example.yourmeal.dashboard.home.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.example.yourmeal.dashboard.home.view.HomeViewInterface;
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.repo.RepoInterface;
 
 import java.util.List;
 import java.util.Random;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenter implements HomePresenterInterface {
 
@@ -27,9 +32,19 @@ public class HomePresenter implements HomePresenterInterface {
         homeView.onResponseError(errorMsg);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getRandomMeal(){
-        repo.getRandomMeal(this);
+        repo.getRandomMeal()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((randomMealResponse, throwable) -> {
+                    if (randomMealResponse != null){
+                        homeView.onRandomMealResponseSuccess(randomMealResponse.getMeals().get(0));
+                    } else if (throwable != null) {
+                        homeView.onResponseError(throwable.getMessage());
+                    }
+                });
     }
 
     @Override
@@ -37,9 +52,19 @@ public class HomePresenter implements HomePresenterInterface {
         homeView.onAllMealsResponseSuccess(allMealsResponseList);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getAllMeals(){
-        repo.getAllMeals(this, getRandomCharacter());
+        repo.getAllMeals(getRandomCharacter())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((randomMealResponse, throwable) -> {
+                    if (randomMealResponse != null){
+                        homeView.onAllMealsResponseSuccess(randomMealResponse.getMeals());
+                    } else if (throwable != null) {
+                        homeView.onResponseError(throwable.getMessage());
+                    }
+                });
     }
 
     private char getRandomCharacter() {
