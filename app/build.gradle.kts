@@ -66,5 +66,11 @@ dependencies {
 
     implementation(libs.android.youtube.player)
 
+    implementation (libs.adapter.rxjava3)
+    implementation (libs.room.rxjava3)
+
+    implementation (libs.rxandroid)
+    implementation (libs.rxjava)
+
 
 }

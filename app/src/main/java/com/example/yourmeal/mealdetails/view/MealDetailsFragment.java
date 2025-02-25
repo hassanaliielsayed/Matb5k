@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +33,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment{
+public class MealDetailsFragment extends Fragment implements MealDetailsViewInterface {
 
     Meal meal;
     ImageView imgMealThumb;
@@ -74,7 +73,7 @@ public class MealDetailsFragment extends Fragment{
         detailsPresenter = new MealsDetailsPresenter(Repo.getInstance(
                 new MealsRemoteDataSource(APIClient.getInstance().getService()),
                 new MealsLocalDataSource(getContext())
-        ));
+        ), this);
 
         if (youTubeURL == null) {
             Log.e("asd --> ", "YouTube URL is null");
@@ -98,14 +97,8 @@ public class MealDetailsFragment extends Fragment{
             }
         }
 
-//        LiveData<Meal> mealById = detailsPresenter.getMealById(meal.getIdMeal());
-//        if (mealById != null){
-//            imgFavBtn.setImageResource(R.drawable.heart_filled);
-//            isFav = true;
-//        } else {
-//            imgFavBtn.setImageResource(R.drawable.heart_empty);
-//            isFav = false;
-//        }
+        detailsPresenter.getMealById(meal.getIdMeal());
+
 
         imgFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +113,8 @@ public class MealDetailsFragment extends Fragment{
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Handle the delete action
                                     detailsPresenter.removeMealFromFav(meal);
+                                    imgFavBtn.setImageResource(R.drawable.heart_empty);
+                                    isFav = false;
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -127,17 +122,15 @@ public class MealDetailsFragment extends Fragment{
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Dismiss the dialog
                                     dialogInterface.dismiss();
+                                    isFav = true;
                                 }
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert) // Optional: Set an icon
                             .show(); // Show the dialog
 
-                    isFav = true;
-
                 } else {
                     detailsPresenter.addMealToFav(meal);
                     imgFavBtn.setImageResource(R.drawable.heart_filled);
-                    Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
                     isFav = true;
                 }
 
@@ -325,5 +318,26 @@ public class MealDetailsFragment extends Fragment{
     public void onStop() {
         super.onStop();
         youTubePlayerView.release();
+    }
+
+    @Override
+    public void showAddedMessage() {
+        Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showRemovedMessage() {
+        Toast.makeText(getContext(), "Removed Favorite Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showFavItemIcon(Meal meal) {
+        if (meal != null){
+            imgFavBtn.setImageResource(R.drawable.heart_filled);
+            isFav = true;
+        } else {
+            imgFavBtn.setImageResource(R.drawable.heart_empty);
+            isFav = false;
+        }
     }
 }

@@ -36,6 +36,8 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
 
     private FragmentHomeBinding binding;
 
+    private Meal randomMeal;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -61,11 +63,20 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
         randomMealsPresenter.getRandomMeal();
         randomMealsPresenter.getAllMeals();
 
+        binding.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(randomMeal);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+
 
     }
 
     @Override
     public void onRandomMealResponseSuccess(Meal meal) {
+        randomMeal = meal;
         binding.progressBarMeal.setVisibility(View.GONE);
         binding.txtTitle.setText(meal.getStrMeal());
         binding.txtArea.setText(getString(R.string.area).concat(meal.getStrArea()));
@@ -108,4 +119,6 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
         super.onStop();
         communicator.hideNavBottom();
     }
+
+
 }

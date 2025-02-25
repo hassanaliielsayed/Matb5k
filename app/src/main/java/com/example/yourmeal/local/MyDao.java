@@ -11,17 +11,20 @@ import com.example.yourmeal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface MyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(Meal meal);
+    Completable insertMeal(Meal meal);
     @Delete
-    void deleteMeal(Meal meal);
+    Completable deleteMeal(Meal meal);
     @Query("select * from my_meal_table")
-    LiveData<List<Meal>> getAllMeals();
+    Flowable<List<Meal>> getAllMeals();
 
     @Query("select * from my_meal_table where idMeal = :idMeal")
-    LiveData<Meal> getMealById(String idMeal);
+    Flowable<Meal> getMealById(String idMeal);
 
 
 

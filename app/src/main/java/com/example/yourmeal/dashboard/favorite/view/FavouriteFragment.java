@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -55,19 +57,8 @@ public class FavouriteFragment extends Fragment implements OnItemClickListener, 
                 new MealsRemoteDataSource(APIClient.getInstance().getService()),
                 new MealsLocalDataSource(getContext())));
 
-        mealsLocally = favPresenter.getMealsLocally();
-        mealsLocally.observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> mealList) {
-                if (mealList == null){
-                    Log.i("asd --> ", "onChanged: " + mealList.size());
-                } else {
-                    Log.i("asd --> ", "onChanged: " + mealList.size());
-                    adapter.setMealsList(mealList);
-                }
+        favPresenter.getMealsLocally();
 
-            }
-        });
 
 
         communicator = (Communicator) getActivity();
@@ -97,5 +88,15 @@ public class FavouriteFragment extends Fragment implements OnItemClickListener, 
     @Override
     public void removeItem(Meal meal) {
         favPresenter.removeMeal(meal);
+    }
+
+    @Override
+    public void ShowMessage() {
+        Toast.makeText(getContext(), "Item Removed Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProductsLocally(List<Meal> mealList) {
+        adapter.setMealsList(mealList);
     }
 }
