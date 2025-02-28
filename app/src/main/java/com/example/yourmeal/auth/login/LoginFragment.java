@@ -1,9 +1,10 @@
 package com.example.yourmeal.auth.login;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import android.util.Log;
@@ -15,9 +16,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.yourmeal.R;
+import com.example.yourmeal.auth.OnDashboardNavigationListener;
+import com.example.yourmeal.util.SharedUIMethods;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Objects;
 
@@ -26,9 +38,11 @@ public class LoginFragment extends Fragment {
     TextInputEditText txtInputPassword, txtInputEmail, txtInputPassETGmail;
     MaterialButton btnLogin;
     ProgressBar progressBar;
-    TextView txtCreateAccount;
+    TextView txtCreateAccount, txtGuest;
+    ConstraintLayout constraintLayoutGoogle;
+    private GoogleSignInClient client;
 
-    FirebaseAuth firebaseAuth;
+
 
 
     @Override
@@ -43,22 +57,80 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         txtInputEmail = view.findViewById(R.id.txtInputEmailETLogin);
         txtInputPassword = view.findViewById(R.id.txtInputPassETLogin);
-        btnLogin = view.findViewById(R.id.btnLogin);
+        btnLogin = view.findViewById(R.id.btnLogout);
         progressBar = view.findViewById(R.id.progress_bar_login);
         txtCreateAccount = view.findViewById(R.id.txtCreateAccount);
-        txtInputPassETGmail = view.findViewById(R.id.txtInputPassETGmail);
+        constraintLayoutGoogle = view.findViewById(R.id.constraintLayoutGoogle);
+        txtGuest = view.findViewById(R.id.txtGuest);
+
+        txtGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OnDashboardNavigationListener activity = (OnDashboardNavigationListener) getActivity();
+                if (activity != null) {
+                    activity.navigateToDashboard();
+                }
+            }
+        });
+
+
+
+
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                                .build();
+
+        client = GoogleSignIn.getClient(requireActivity(), options);
+
+        constraintLayoutGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(client.getSignInIntent(), 1234);
+            }
+        });
 
         btnLogin.setOnClickListener(view1 -> {
             loginUser();
         });
 
+
         txtCreateAccount.setOnClickListener(view2 -> {
-            Navigation.findNavController(view).popBackStack();
+
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
         });
 
 
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1234){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            GoogleSignInAccount account = task.getResult();
+            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            FirebaseAuth.getInstance().signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+
+                                Log.i(" asd --> ", "onComplete: " + task.getResult().getUser().getDisplayName());
+                                Log.i(" asd --> ", "onComplete: " + task.getResult().getUser().getEmail());
+
+                                SharedUIMethods.saveUserInSharedPreference(requireContext(), Objects.requireNonNull(task.getResult().getUser().getDisplayName()), task.getResult().getUser().getEmail(), null, true);
+                                navigateToDashboard();
+                            } else {
+                                Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+
 
     private void loginUser() {
         String email = Objects.requireNonNull(txtInputEmail.getText()).toString();
@@ -76,11 +148,19 @@ public class LoginFragment extends Fragment {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             changeProgress(false);
             if (task.isSuccessful()){
-                // TODO: go to Home
+                SharedUIMethods.saveUserInSharedPreference(requireContext(), null, email, password, true);
+                navigateToDashboard();
             } else {
                 Toast.makeText(getActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void navigateToDashboard() {
+        OnDashboardNavigationListener listener = (OnDashboardNavigationListener) getActivity();
+        if (listener != null) {
+            listener.navigateToDashboard();
+        }
     }
 
     private void changeProgress(boolean inProgress){

@@ -23,6 +23,13 @@ safeArgs = "2.8.7"
 androidyoutubeplayer = "12.1.1"
 rxandroid = "3.0.2"
 rxjava = "3.1.10"
+credentials = "1.3.0"
+credentialsPlayServicesAuth = "1.3.0"
+googleid = "1.1.1"
+playServicesAuth = "21.3.0"
+circleimageview = "3.1.0"
+
+
 
 [libraries]
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
@@ -51,6 +58,11 @@ android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubepla
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth"}
+circleimageview = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleimageview"}
 
 
 [plugins]

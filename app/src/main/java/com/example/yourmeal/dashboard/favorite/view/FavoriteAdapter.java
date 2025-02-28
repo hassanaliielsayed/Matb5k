@@ -1,5 +1,7 @@
 package com.example.yourmeal.dashboard.favorite.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +61,26 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.imgFilled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onRemoveClicked.removeItem(mealsList.get(position));
+
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Delete Item") // Title of the dialog
+                        .setMessage("Are you sure you want to delete this item?") // Message
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // Handle the delete action
+                                onRemoveClicked.removeItem(mealsList.get(position));
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // Dismiss the dialog
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert) // Optional: Set an icon
+                        .show(); // Show the dialog
             }
         });
 

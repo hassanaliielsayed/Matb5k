@@ -64,7 +64,18 @@ public class Meal implements Serializable {
         private String strSource;
         private Object strTags;
         private String strYoutube;
-        public Object getDateModified() {
+
+        private String email;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+    public Object getDateModified() {
             return dateModified;
         }
         public void setDateModified(Object dateModified) {

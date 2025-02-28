@@ -1,10 +1,11 @@
 package com.example.yourmeal.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.yourmeal.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.yourmeal.auth.AuthActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -14,9 +15,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.yourmeal.databinding.ActivityDashboardBinding;
 
-public class DashboardActivity extends AppCompatActivity implements Communicator {
+public class DashboardActivity extends AppCompatActivity implements Communicator, OnNavigationListener {
 
-    private ActivityDashboardBinding binding;
+    public ActivityDashboardBinding binding;
     NavController navController;
 
     @Override
@@ -50,5 +51,11 @@ public class DashboardActivity extends AppCompatActivity implements Communicator
     @Override
     public void showNavBottom() {
         binding.navView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void navigateToAuthentication() {
+        startActivity(new Intent(this, AuthActivity.class));
+        finish();
     }
 }

@@ -53,8 +53,8 @@ public class FavoritePresenter implements FavoritePresenterInterface {
 
     @SuppressLint("CheckResult")
     @Override
-    public void getMealsLocally() {
-        repo.getStoredMeals()
+    public void getMealsLocally(String email) {
+        repo.getStoredMeals(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mealList -> {

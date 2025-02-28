@@ -20,11 +20,11 @@ public interface MyDao {
     Completable insertMeal(Meal meal);
     @Delete
     Completable deleteMeal(Meal meal);
-    @Query("select * from my_meal_table")
-    Flowable<List<Meal>> getAllMeals();
+    @Query("select * from my_meal_table where email = :email")
+    Flowable<List<Meal>> getAllMeals(String email);
 
-    @Query("select * from my_meal_table where idMeal = :idMeal")
-    Flowable<Meal> getMealById(String idMeal);
+    @Query("select * from my_meal_table where idMeal = :idMeal and email = :email")
+    Flowable<Meal> getMealById(String idMeal, String email);
 
 
 

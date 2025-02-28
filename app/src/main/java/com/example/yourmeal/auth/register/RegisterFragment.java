@@ -19,7 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.yourmeal.R;
+import com.example.yourmeal.auth.OnDashboardNavigationListener;
 import com.example.yourmeal.util.SharedPref;
+import com.example.yourmeal.util.SharedUIMethods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -35,11 +37,7 @@ public class RegisterFragment extends Fragment {
     TextInputEditText txtInputUserName, txtInputEmail, txtInputPassword, txtInputConfirmPassword;
     MaterialButton btnRegister;
     ProgressBar progressBar;
-    TextView txtLogin;
-
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
+    TextView txtLogin, txtGuest;
 
 
     @Override
@@ -65,6 +63,19 @@ public class RegisterFragment extends Fragment {
         progressBar = view.findViewById(R.id.progress_bar);
         btnRegister = view.findViewById(R.id.btnRegister);
         txtLogin = view.findViewById(R.id.txtLogin);
+        txtGuest = view.findViewById(R.id.txtGuest);
+
+
+        txtGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OnDashboardNavigationListener activity = (OnDashboardNavigationListener) getActivity();
+                if (activity != null) {
+                    activity.navigateToDashboard();
+                }
+            }
+        });
+
 
         btnRegister.setOnClickListener(view1 -> createAccount());
         txtLogin.setOnClickListener(view2 -> {
@@ -98,7 +109,7 @@ public class RegisterFragment extends Fragment {
                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
                     if (currentUser != null){
-                        saveUserInSharedPreference(Objects.requireNonNull(txtInputUserName.getText()).toString(), email, password);
+                        SharedUIMethods.saveUserInSharedPreference(requireContext(), Objects.requireNonNull(txtInputUserName.getText()).toString(), email, password, true);
                         navigateToHomeScreen();
                     }
                 } else {
@@ -109,17 +120,13 @@ public class RegisterFragment extends Fragment {
     }
 
     private void navigateToHomeScreen() {
-        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_dashboardActivity);
+        OnDashboardNavigationListener listener = (OnDashboardNavigationListener) getActivity();
+        if (listener != null) {
+            listener.navigateToDashboard();
+        }
     }
 
-    private void saveUserInSharedPreference(String userName, String email, String password) {
 
-        SharedPref.getInstance(getContext()).putValue(USER_NAME, userName);
-        SharedPref.getInstance(getContext()).putValue(EMAIL, email);
-        SharedPref.getInstance(getContext()).putValue(PASSWORD, password);
-        SharedPref.getInstance(getContext()).putValue(ALREADY_LOGGED_IN, true);
-
-    }
 
     private void changeProgress(boolean inProgress){
         if (inProgress){

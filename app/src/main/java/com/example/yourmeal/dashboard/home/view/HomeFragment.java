@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
         binding.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(randomMeal);
+                HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(randomMeal, null);
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
 
     @Override
     public void onMealClicked(Meal meal) {
-        HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal);
+        HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal, null);
         Navigation.findNavController(requireView()).navigate(action);
     }
 

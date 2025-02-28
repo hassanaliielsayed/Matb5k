@@ -13,10 +13,10 @@ public interface MealsLocalDataSourceInterface {
 
     Completable addMeal(Meal meal);
 
-    Flowable<List<Meal>> getMeals();
+    Flowable<List<Meal>> getMeals(String email);
     Completable removeMeal(Meal meal);
 
-    Flowable<Meal> getMealById(String idMeal);
+    Flowable<Meal> getMealById(String idMeal, String email);
 
 
 

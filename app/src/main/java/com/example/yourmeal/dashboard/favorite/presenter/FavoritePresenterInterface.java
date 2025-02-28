@@ -10,5 +10,5 @@ public interface FavoritePresenterInterface {
 
     void removeMeal(Meal meal);
 
-    void getMealsLocally();
+    void getMealsLocally(String email);
 }

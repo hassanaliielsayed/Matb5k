@@ -8,33 +8,23 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.yourmeal.auth.register.RegisterFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:label="Register"
+        tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_registerFragment_to_dashboardActivity"
-            app:destination="@id/dashboardActivity"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.yourmeal.auth.login.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_dashboardActivity"
-            app:destination="@id/dashboardActivity"
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <activity
-        android:id="@+id/dashboardActivity"
-        android:name="com.example.yourmeal.dashboard.DashboardActivity"
-        android:label="DashboardActivity" />
 </navigation>

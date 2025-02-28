@@ -11,5 +11,20 @@
     <style name="Theme.Dashboard.Style" parent="Theme.AppCompat.DayNight">
 
         <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+
     </style>
+
+    <style name="Theme.Search.Style" parent="Theme.MaterialComponents.DayNight">
+
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+
+    </style>
+
+    <style name="Theme.Profile.Style" parent="Theme.MaterialComponents.DayNight">
+
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+
+    </style>
+
+
 </resources>
