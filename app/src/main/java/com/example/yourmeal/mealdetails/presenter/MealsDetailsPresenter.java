@@ -70,9 +70,9 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
 
     @SuppressLint("CheckResult")
     @Override
-    public void getMealById(String idMeal) {
+    public void getMealById(String idMeal , String email) {
 
-        repo.getMealById(idMeal)
+        repo.getMealById(idMeal, email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meal -> {
@@ -103,6 +103,19 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
                 });
     }
 
+    @Override
+    public void getMealByIdFromAPI(String idMeal) {
+        repo.getMealIdResponse(idMeal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((mealIdResponse, throwable) -> {
+                    if (mealIdResponse != null){
+                        mealDetailsViewInterface.onMealResponseSuccess(mealIdResponse.getMeals().get(0));
+                    } else if (throwable != null) {
+                        mealDetailsViewInterface.showErrorMessage(throwable.getMessage());
+                    }
+                });
+    }
 
 
 }

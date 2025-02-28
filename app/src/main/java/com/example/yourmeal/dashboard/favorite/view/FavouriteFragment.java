@@ -1,7 +1,6 @@
 package com.example.yourmeal.dashboard.favorite.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.yourmeal.dashboard.Communicator;
 import com.example.yourmeal.dashboard.favorite.presenter.FavoritePresenter;
 import com.example.yourmeal.dashboard.favorite.presenter.FavoritePresenterInterface;
-import com.example.yourmeal.dashboard.home.view.OnMealItemClickListener;
 import com.example.yourmeal.databinding.FragmentFavouriteBinding;
 import com.example.yourmeal.local.MealsLocalDataSource;
 import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.network.APIClient;
 import com.example.yourmeal.network.MealsRemoteDataSource;
 import com.example.yourmeal.repo.Repo;
+import com.example.yourmeal.util.Constants;
+import com.example.yourmeal.util.SharedPref;
 
 import java.util.List;
 
@@ -57,7 +55,13 @@ public class FavouriteFragment extends Fragment implements OnItemClickListener, 
                 new MealsRemoteDataSource(APIClient.getInstance().getService()),
                 new MealsLocalDataSource(getContext())));
 
-        favPresenter.getMealsLocally();
+        String email = SharedPref.getInstance(getContext()).getStringValue(Constants.EMAIL, "");
+        if (email.isEmpty()){
+            Toast.makeText(getContext(), "No Items Here", Toast.LENGTH_SHORT).show();
+        } else {
+            favPresenter.getMealsLocally(email);
+        }
+
 
 
 
@@ -81,7 +85,7 @@ public class FavouriteFragment extends Fragment implements OnItemClickListener, 
 
     @Override
     public void onMealClicked(Meal meal) {
-        FavouriteFragmentDirections.ActionNavigationFavToMealDetailsFragment action = FavouriteFragmentDirections.actionNavigationFavToMealDetailsFragment(meal);
+        FavouriteFragmentDirections.ActionNavigationFavToMealDetailsFragment action = FavouriteFragmentDirections.actionNavigationFavToMealDetailsFragment(meal, null);
         Navigation.findNavController(requireView()).navigate(action);
     }
 

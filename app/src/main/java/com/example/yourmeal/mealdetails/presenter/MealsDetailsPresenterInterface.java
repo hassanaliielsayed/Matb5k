@@ -9,9 +9,11 @@ public interface MealsDetailsPresenterInterface {
 
     void addMealToFav(Meal meal);
 
-    void getMealById(String idMeal);
+    void getMealById(String idMeal, String email);
 
     void removeMealFromFav(Meal meal);
+
+    void getMealByIdFromAPI(String idMeal);
 
 
 

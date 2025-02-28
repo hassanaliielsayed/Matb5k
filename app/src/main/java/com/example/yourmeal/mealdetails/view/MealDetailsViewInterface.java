@@ -8,4 +8,8 @@ public interface MealDetailsViewInterface {
 
     void showFavItemIcon(Meal meal);
 
+    void onMealResponseSuccess(Meal meal);
+
+    void showErrorMessage(String errorMsg);
+
 }

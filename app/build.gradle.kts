@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -71,6 +74,11 @@ dependencies {
 
     implementation (libs.rxandroid)
     implementation (libs.rxjava)
+
+
+    implementation (libs.play.services.auth)
+
+    implementation (libs.circleimageview)
 
 
 }

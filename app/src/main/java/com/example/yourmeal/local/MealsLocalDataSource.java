@@ -27,8 +27,8 @@ public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
     }
 
     @Override
-    public Flowable<List<Meal>> getMeals() {
-        return myDao.getAllMeals();
+    public Flowable<List<Meal>> getMeals(String email) {
+        return myDao.getAllMeals(email);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
     }
 
     @Override
-    public Flowable<Meal> getMealById(String idMeal) {
-        return myDao.getMealById(idMeal);
+    public Flowable<Meal> getMealById(String idMeal, String email) {
+        return myDao.getMealById(idMeal, email);
     }
 }

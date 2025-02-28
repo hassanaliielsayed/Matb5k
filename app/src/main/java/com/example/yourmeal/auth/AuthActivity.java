@@ -1,5 +1,6 @@
 package com.example.yourmeal.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,18 +10,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.yourmeal.R;
+import com.example.yourmeal.dashboard.DashboardActivity;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity implements OnDashboardNavigationListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    }
+
+    @Override
+    public void navigateToDashboard() {
+        startActivity(new Intent(this, DashboardActivity.class));
+        finish();
     }
 }

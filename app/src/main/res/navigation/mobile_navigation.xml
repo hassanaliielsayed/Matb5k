@@ -37,16 +37,57 @@
         tools:layout="@layout/fragment_meal_details">
         <argument
             android:name="meal"
-            app:argType="com.example.yourmeal.model.Meal" />
+            app:argType="com.example.yourmeal.model.Meal"
+            app:nullable="true" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.yourmeal.dashboard.search.SearchFragment"
+        android:name="com.example.yourmeal.dashboard.search.view.SearchFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.yourmeal.dashboard.profile.ProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_fav"
+            app:destination="@id/navigation_fav" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_calender"
+            app:destination="@id/navigation_calender" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_fav2"
+            app:destination="@id/navigation_fav"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_calender2"
+            app:destination="@id/navigation_calender"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.yourmeal.searchresult.view.SearchResultFragment"
+        android:label="@string/search_result"
+        tools:layout="@layout/fragment_search_result" >
+        <argument
+            android:name="itemName"
+            app:argType="string" />
+        <argument
+            android:name="checkedChip"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
 </navigation>

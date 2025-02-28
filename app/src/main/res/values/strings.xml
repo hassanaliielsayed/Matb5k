@@ -41,4 +41,13 @@
     <string name="favourite">Favourite</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
+    <string name="country">Country</string>
+    <string name="google_sign_in">OR SignIn With</string>
+    <string name="hello">Hello, My Chef</string>
+    <string name="favorite_meals">Favorite Meals</string>
+    <string name="planned_meals">Planned Meals</string>
+    <string name="logout">Logout</string>
+    <string name="continue_as_a_guest">Continue as a Guest</string>
+    <string name="search_result">Search Result</string>
+    <string name="income">Incoming Meal</string>
 </resources>

@@ -14,11 +14,17 @@ import com.bumptech.glide.Glide;
 import com.example.yourmeal.R;
 import com.example.yourmeal.model.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
     List<Ingredient> ingredientsList;
+
+    public IngredientAdapter(){
+
+        ingredientsList = new ArrayList<>();
+    }
 
 
     public void setIngredient(List<Ingredient> ingredientsList) {
