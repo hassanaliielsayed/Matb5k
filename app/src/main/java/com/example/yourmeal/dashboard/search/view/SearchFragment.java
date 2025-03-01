@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.Lottie;
+import com.airbnb.lottie.LottieAnimationView;
+import com.example.yourmeal.util.ConnectionLiveData;
 import com.example.yourmeal.util.Constants;
 import com.google.android.material.chip.Chip;
 
@@ -49,6 +52,8 @@ public class SearchFragment extends Fragment implements SearchFragmentViewInterf
     private RecyclerView recyclerViewSearch;
 
     int checkedChip = Constants.CATEGORY;
+
+    LottieAnimationView lotti;
 
     EditText edtSearch;
     private static final Map<String, String> countryCodeMap = new HashMap<>();
@@ -109,6 +114,8 @@ public class SearchFragment extends Fragment implements SearchFragmentViewInterf
         recyclerViewSearch.setAdapter(adapter);
         chipGroup = view.findViewById(R.id.chipGroup);
         edtSearch = view.findViewById(R.id.edtSearch);
+        lotti = view.findViewById(R.id.lotti);
+
 
 
         searchPresenter = new SearchPresenter(
@@ -119,20 +126,56 @@ public class SearchFragment extends Fragment implements SearchFragmentViewInterf
                 )
         );
 
-        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        new ConnectionLiveData(requireContext()).observe(getViewLifecycleOwner(), isNetworkConnected -> {
+            if (isNetworkConnected){
 
-            if (checkedId == R.id.chipCategory){
-                checkedChip = Constants.CATEGORY;
-                searchPresenter.getAllCategories();
-            } else if (checkedId == R.id.chipCountry) {
-                checkedChip = Constants.COUNTRY;
-                searchPresenter.getAllMealsAreas();
-            } else if (checkedId == R.id.chipIngredient) {
-                checkedChip = Constants.INGREDIENT;
-                searchPresenter.getAllIngredients();
+                edtSearch.setVisibility(View.VISIBLE);
+                chipGroup.setVisibility(View.VISIBLE);
+                recyclerViewSearch.setVisibility(View.VISIBLE);
+                lotti.setVisibility(View.GONE);
+                chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+
+
+                    if (checkedId == R.id.chipCategory){
+                        checkedChip = Constants.CATEGORY;
+                        searchPresenter.getAllCategories();
+                    } else if (checkedId == R.id.chipCountry) {
+                        checkedChip = Constants.COUNTRY;
+                        searchPresenter.getAllMealsAreas();
+                    } else if (checkedId == R.id.chipIngredient) {
+                        checkedChip = Constants.INGREDIENT;
+                        searchPresenter.getAllIngredients();
+                    }
+
+
+
+                });
+
+            } else {
+
+                edtSearch.setVisibility(View.GONE);
+                chipGroup.setVisibility(View.GONE);
+                recyclerViewSearch.setVisibility(View.GONE);
+                lotti.setVisibility(View.VISIBLE);
+
+
             }
-
         });
+
+//        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+//
+//            if (checkedId == R.id.chipCategory){
+//                checkedChip = Constants.CATEGORY;
+//                searchPresenter.getAllCategories();
+//            } else if (checkedId == R.id.chipCountry) {
+//                checkedChip = Constants.COUNTRY;
+//                searchPresenter.getAllMealsAreas();
+//            } else if (checkedId == R.id.chipIngredient) {
+//                checkedChip = Constants.INGREDIENT;
+//                searchPresenter.getAllIngredients();
+//            }
+//
+//        });
 
         if (chipGroup.getChildCount() > 0) {
             Chip firstChip = (Chip) chipGroup.getChildAt(0);

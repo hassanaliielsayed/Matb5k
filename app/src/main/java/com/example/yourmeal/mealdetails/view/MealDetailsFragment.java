@@ -2,6 +2,7 @@ package com.example.yourmeal.mealdetails.view;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,22 +29,27 @@ import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.network.APIClient;
 import com.example.yourmeal.network.MealsRemoteDataSource;
 import com.example.yourmeal.repo.Repo;
+import com.example.yourmeal.util.ConnectionLiveData;
 import com.example.yourmeal.util.Constants;
 import com.example.yourmeal.util.SharedPref;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MealDetailsFragment extends Fragment implements MealDetailsViewInterface {
 
     ImageView imgMealThumb;
-    TextView txtMealName, txtMealDetails, txtInstructions;
+    TextView txtMealName, txtMealDetails, txtInstructions, txtYoutube;
     ImageButton imgFavBtn, imgCalendarBtn;
 
     YouTubePlayerView youTubePlayerView;
+
+    private Meal currentMeal;
 
     RecyclerView recyclerView;
     IngredientAdapter adapter;
@@ -74,6 +81,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
                 new MealsLocalDataSource(getContext())
         ), this);
 
+
         if (meal != null){
             setDetails(meal);
         } else if (id != null) {
@@ -83,6 +91,57 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
         }
 
 
+        imgCalendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupDatePicker();
+            }
+        });
+
+        new ConnectionLiveData(requireContext()).observe(getViewLifecycleOwner(), isNetworkConnected -> {
+            if(!isNetworkConnected){
+                youTubePlayerView.setVisibility(View.GONE);
+                txtYoutube.setVisibility(View.GONE);
+
+            } else {
+                youTubePlayerView.setVisibility(View.VISIBLE);
+                txtYoutube.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+    }
+
+    private void setupDatePicker() {
+        // Get current date
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Create DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Log.d("TAG"
+                                ,"onDateSet: ");
+                        String formattedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        Log.d("TAG", "setupDatePicker: "+formattedDate);
+                        Toast.makeText(getActivity(), formattedDate, Toast.LENGTH_SHORT).show();
+                        currentMeal.setUpComingDate(formattedDate);
+                        detailsPresenter.addMealToFav(currentMeal);
+
+                    }
+                },
+                year, month, day
+        );
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        calendar.add(Calendar.DAY_OF_YEAR, 6);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     private void isFavMeal(String idMeal) {
@@ -91,6 +150,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
             detailsPresenter.getMealById(idMeal, email);
         }
     }
+
+
 
     private void handleYouTubeLink(String youTubeURL) {
         if (youTubeURL == null) {
@@ -271,12 +332,15 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
         imgCalendarBtn = view.findViewById(R.id.imgCalendarAdd);
         recyclerView = view.findViewById(R.id.recyclerView);
         youTubePlayerView = view.findViewById(R.id.you_tube_player_view);
+        txtYoutube = view.findViewById(R.id.txtYoutube);
         getLifecycle().addObserver(youTubePlayerView);
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
     }
 
     private void setDetails(Meal meal){
+
+        currentMeal = meal;
 
         Glide.with(this)
                 .load(meal.getStrMealThumb())
@@ -367,10 +431,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
         youTubePlayerView.release();
     }
 
-    @Override
-    public void showAddedMessage() {
-        Toast.makeText(getContext(), "Added To Favorite Successfully", Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     public void showRemovedMessage() {
@@ -396,5 +457,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewInte
     @Override
     public void showErrorMessage(String errorMsg) {
         Toast.makeText(getContext(), "No Meals Found", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showResultMessage(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

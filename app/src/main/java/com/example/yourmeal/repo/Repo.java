@@ -108,5 +108,15 @@ public class Repo implements RepoInterface {
         return mealsRemoteDataSource.getMealIdResponse(idName);
     }
 
+    @Override
+    public Completable updateMeal(Meal meal) {
+        return mealsLocalDataSource.updateMeal(meal);
+    }
+
+    @Override
+    public Flowable<List<Meal>> getUpcomingMeals(String selectedDate) {
+        return mealsLocalDataSource.getUpcomingMeals(selectedDate);
+    }
+
 
 }

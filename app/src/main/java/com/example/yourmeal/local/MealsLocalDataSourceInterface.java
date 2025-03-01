@@ -18,6 +18,9 @@ public interface MealsLocalDataSourceInterface {
 
     Flowable<Meal> getMealById(String idMeal, String email);
 
+    Completable updateMeal(Meal meal);
+    Flowable<List<Meal>> getUpcomingMeals(String selectedDate);
+
 
 
 

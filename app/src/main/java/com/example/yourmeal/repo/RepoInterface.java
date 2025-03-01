@@ -42,6 +42,10 @@ public interface RepoInterface {
 
     Single<MealIdResponse> getMealIdResponse(String idName);
 
+    Completable updateMeal(Meal meal);
+
+    Flowable<List<Meal>> getUpcomingMeals(String selectedDate);
+
 
 
 }

@@ -58,7 +58,7 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
 
                     @Override
                     public void onComplete() {
-                        mealDetailsViewInterface.showAddedMessage();
+                        mealDetailsViewInterface.showResultMessage("Added Successfully");
                     }
 
                     @Override
@@ -103,6 +103,7 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
                 });
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getMealByIdFromAPI(String idMeal) {
         repo.getMealIdResponse(idMeal)
@@ -114,6 +115,17 @@ public class MealsDetailsPresenter implements MealsDetailsPresenterInterface {
                     } else if (throwable != null) {
                         mealDetailsViewInterface.showErrorMessage(throwable.getMessage());
                     }
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void updateMeal(Meal meal) {
+        repo.updateMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                   mealDetailsViewInterface.showResultMessage("Updated Successfully");
                 });
     }
 

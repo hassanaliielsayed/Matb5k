@@ -25,6 +25,7 @@ import com.example.yourmeal.model.Meal;
 import com.example.yourmeal.network.APIClient;
 import com.example.yourmeal.network.MealsRemoteDataSource;
 import com.example.yourmeal.repo.Repo;
+import com.example.yourmeal.util.ConnectionLiveData;
 
 import java.util.List;
 
@@ -60,8 +61,7 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
                 ),
                 this
         );
-        randomMealsPresenter.getRandomMeal();
-        randomMealsPresenter.getAllMeals();
+
 
         binding.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +69,37 @@ public class HomeFragment extends Fragment implements HomeViewInterface, OnMealI
                 HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment action = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(randomMeal, null);
                 Navigation.findNavController(view).navigate(action);
             }
+        });
+
+        new ConnectionLiveData(requireContext()).observe(getViewLifecycleOwner(), isNetworkConnected -> {
+            if (isNetworkConnected){
+                // make api call and show data (Visibility : visible)
+                binding.textView.setVisibility(View.VISIBLE);
+                binding.cardView.setVisibility(View.VISIBLE);
+                binding.txtForYou.setVisibility(View.VISIBLE);
+                binding.allMealRecyclerView.setVisibility(View.VISIBLE);
+                binding.lotti.setVisibility(View.GONE);
+                randomMealsPresenter.getRandomMeal();
+                randomMealsPresenter.getAllMeals();
+
+                // hide network lost lotti
+
+
+
+            } else {
+                // hide  data (Visibility : gone)
+                // show network lost lotti
+                binding.textView.setVisibility(View.GONE);
+                binding.cardView.setVisibility(View.GONE);
+                binding.txtForYou.setVisibility(View.GONE);
+                binding.allMealRecyclerView.setVisibility(View.GONE);
+                binding.lotti.setVisibility(View.VISIBLE);
+
+                Toast.makeText(requireContext(), "Network lost", Toast.LENGTH_LONG).show();
+            }
+
+
+
         });
 
 

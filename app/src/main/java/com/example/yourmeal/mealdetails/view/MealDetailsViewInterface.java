@@ -3,7 +3,6 @@ package com.example.yourmeal.mealdetails.view;
 import com.example.yourmeal.model.Meal;
 
 public interface MealDetailsViewInterface {
-    void showAddedMessage();
     void showRemovedMessage();
 
     void showFavItemIcon(Meal meal);
@@ -11,5 +10,7 @@ public interface MealDetailsViewInterface {
     void onMealResponseSuccess(Meal meal);
 
     void showErrorMessage(String errorMsg);
+
+    void showResultMessage(String msg);
 
 }
