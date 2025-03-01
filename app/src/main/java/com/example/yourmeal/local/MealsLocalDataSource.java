@@ -41,4 +41,14 @@ public class MealsLocalDataSource implements MealsLocalDataSourceInterface{
     public Flowable<Meal> getMealById(String idMeal, String email) {
         return myDao.getMealById(idMeal, email);
     }
+
+    @Override
+    public Completable updateMeal(Meal meal) {
+        return myDao.updateMeal(meal);
+    }
+
+    @Override
+    public Flowable<List<Meal>> getUpcomingMeals(String selectedDate) {
+        return myDao.getUpcomingMeals(selectedDate);
+    }
 }

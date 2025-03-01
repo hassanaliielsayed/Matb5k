@@ -50,4 +50,6 @@
     <string name="continue_as_a_guest">Continue as a Guest</string>
     <string name="search_result">Search Result</string>
     <string name="income">Incoming Meal</string>
+    <string name="welcome">Welcome Chef</string>
+    <string name="week_plan">Your Week Plan:</string>
 </resources>

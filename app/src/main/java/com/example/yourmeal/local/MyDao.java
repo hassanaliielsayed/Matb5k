@@ -1,11 +1,11 @@
 package com.example.yourmeal.local;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.yourmeal.model.Meal;
 
@@ -25,6 +25,14 @@ public interface MyDao {
 
     @Query("select * from my_meal_table where idMeal = :idMeal and email = :email")
     Flowable<Meal> getMealById(String idMeal, String email);
+
+    @Update
+    Completable updateMeal(Meal meal);
+
+    @Query("select * from my_meal_table where upComingDate = :selectedDate")
+    Flowable<List<Meal>> getUpcomingMeals(String selectedDate);
+
+
 
 
 

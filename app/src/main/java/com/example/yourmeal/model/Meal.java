@@ -12,7 +12,10 @@ public class Meal implements Serializable {
         @PrimaryKey
         @NonNull
         private String idMeal;
+
+        private String upComingDate;
         private Object dateModified;
+
         private String strArea;
         private String strCategory;
         private Object strCreativeCommonsConfirmed;
@@ -67,7 +70,15 @@ public class Meal implements Serializable {
 
         private String email;
 
-        public String getEmail() {
+    public String getUpComingDate() {
+        return upComingDate;
+    }
+
+    public void setUpComingDate(String upComingDate) {
+        this.upComingDate = upComingDate;
+    }
+
+    public String getEmail() {
             return email;
         }
 

@@ -15,6 +15,8 @@ public interface MealsDetailsPresenterInterface {
 
     void getMealByIdFromAPI(String idMeal);
 
+    void updateMeal(Meal meal);
+
 
 
 }

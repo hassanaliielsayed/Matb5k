@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.yourmeal.R;
 import com.example.yourmeal.local.MealsLocalDataSource;
 import com.example.yourmeal.model.FilterMeals;
@@ -22,6 +23,7 @@ import com.example.yourmeal.network.MealsRemoteDataSource;
 import com.example.yourmeal.repo.Repo;
 import com.example.yourmeal.searchresult.presenter.SearchResultPresenter;
 import com.example.yourmeal.searchresult.presenter.SearchResultPresenterInterface;
+import com.example.yourmeal.util.ConnectionLiveData;
 import com.example.yourmeal.util.Constants;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class SearchResultFragment extends Fragment implements SearchResultView, 
     RecyclerView recyclerView;
     SearchResultAdapter adapter;
     List<FilterMeals> filterMealsList;
+
+    LottieAnimationView lotti;
 
 
     SearchResultPresenterInterface searchResultPresenter;
@@ -59,6 +63,7 @@ public class SearchResultFragment extends Fragment implements SearchResultView, 
         String itemName = args.getItemName();
 
         txtComing = view.findViewById(R.id.txtComing);
+        lotti = view.findViewById(R.id.lotti);
         txtComing.setText(itemName + " Meals");
         filterMealsList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -74,16 +79,44 @@ public class SearchResultFragment extends Fragment implements SearchResultView, 
                 this
         );
 
-        if (checkedChip == Constants.COUNTRY){
-            searchResultPresenter.getCountryMeals(itemName);
-            recyclerView.setAdapter(adapter);
-        } else if (checkedChip == Constants.INGREDIENT) {
-            searchResultPresenter.getIngredientsMeals(itemName);
-            recyclerView.setAdapter(adapter);
-        } else if (checkedChip == Constants.CATEGORY) {
-            searchResultPresenter.getCategoryMeals(itemName);
-            recyclerView.setAdapter(adapter);
-        }
+        new ConnectionLiveData(requireContext()).observe(getViewLifecycleOwner(), isNetworkConnected -> {
+
+            if (isNetworkConnected){
+
+                txtComing.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                lotti.setVisibility(View.GONE);
+
+                if (checkedChip == Constants.COUNTRY){
+                    searchResultPresenter.getCountryMeals(itemName);
+                    recyclerView.setAdapter(adapter);
+                } else if (checkedChip == Constants.INGREDIENT) {
+                    searchResultPresenter.getIngredientsMeals(itemName);
+                    recyclerView.setAdapter(adapter);
+                } else if (checkedChip == Constants.CATEGORY) {
+                    searchResultPresenter.getCategoryMeals(itemName);
+                    recyclerView.setAdapter(adapter);
+                }
+
+
+            } else {
+
+                txtComing.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+                lotti.setVisibility(View.VISIBLE);
+            }
+        });
+
+//        if (checkedChip == Constants.COUNTRY){
+//            searchResultPresenter.getCountryMeals(itemName);
+//            recyclerView.setAdapter(adapter);
+//        } else if (checkedChip == Constants.INGREDIENT) {
+//            searchResultPresenter.getIngredientsMeals(itemName);
+//            recyclerView.setAdapter(adapter);
+//        } else if (checkedChip == Constants.CATEGORY) {
+//            searchResultPresenter.getCategoryMeals(itemName);
+//            recyclerView.setAdapter(adapter);
+//        }
 
 
     }
